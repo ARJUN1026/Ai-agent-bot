@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Digital Friend AI Support Platform
 
-## Getting Started
+Production-grade AI customer support SaaS built with Next.js, TypeScript, Prisma, SQLite, and a premium dashboard UX.
 
-First, run the development server:
+## Overview
+
+Digital Friend AI is a no-login support console that starts directly in the chatbot workspace and offers multi-provider AI fallback:
+
+1. OpenAI GPT API
+2. Gemini API
+3. Groq API
+4. Local mock fallback (always available)
+
+## Features
+
+- Premium SaaS layout (sidebar, top bar, chat canvas, floating input)
+- AI status + provider badge
+- Suggested prompts and rich empty state
+- Markdown rendering with code highlighting
+- Conversation persistence in SQLite via Prisma
+- Conversation history, delete, and continue chat
+- Export route for markdown transcript download flow
+- Dark futuristic visual design and motion effects
+- Toast notifications and resilient error handling
+
+## Screenshots
+
+- `docs/screenshots/dashboard.png` (add screenshot)
+- `docs/screenshots/mobile.png` (add screenshot)
+- `docs/screenshots/chat-thread.png` (add screenshot)
+
+## Tech Stack
+
+- Next.js 15/16 App Router + React 19 + TypeScript
+- TailwindCSS + Framer Motion + Lucide
+- Zustand + Axios + Sonner
+- Prisma ORM + SQLite
+- Express (auxiliary server entry)
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+DATABASE_URL="file:./prisma/dev.db"
+OPENAI_API_KEY=""
+GEMINI_API_KEY=""
+GROQ_API_KEY=""
+NEXT_PUBLIC_APP_NAME="Digital Friend AI"
+```
+
+## Installation
+
+```bash
+npm install
+```
+
+## Database Setup
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+## Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Optional Express health server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev:express
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API Routes
 
-## Learn More
+- `POST /api/chat`
+- `GET /api/history`
+- `GET /api/conversation/:id`
+- `DELETE /api/conversation/:id`
+- `PATCH /api/conversation/:id`
+- `POST /api/export`
 
-To learn more about Next.js, take a look at the following resources:
+## Folder Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`src/app` routing and API handlers  
+`src/features/chat` chat window and input components  
+`src/features/sidebar` sidebar and history UX  
+`src/features/navbar` top navigation UX  
+`src/services` API and AI provider fallback layer  
+`src/store` Zustand state management  
+`src/lib` shared utilities + Prisma client  
+`prisma` schema and migrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment Guide
 
-## Deploy on Vercel
+1. Set environment variables in hosting platform.
+2. Run Prisma migrate during build/release.
+3. Deploy Next.js app on Vercel, Render, or Railway.
+4. Use managed SQLite-compatible storage or migrate to Postgres for scale.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Future Improvements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Real streaming token responses (SSE)
+- Rename conversation inline editing
+- Attachment upload with OCR
+- Voice input integration
+- Agent handoff to human support dashboard
